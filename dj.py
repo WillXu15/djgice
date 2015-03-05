@@ -18,19 +18,19 @@ def get_frozen():
 
 def get_song(url):
     print "DOWNLOADING SONG"
-    subprocess.call("youtube-dl -o '%(id)s.%(ext)s' -x --audio-format mp3 " +url, shell=True)
+    subprocess.call("youtube-dl -o '%(id)s.%(ext)s' -x --audio-format mp3 -q " +url, shell=True)
     load_song()
 
 def load_song():
     print "LOADING SONG"
     song = max(glob.iglob('*.mp3'), key=os.path.getctime)
-    process = "ffmpeg -i "+song+" "+song[:-4]+".wav"
+    process = "ffmpeg -loglevel error -i "+song+" "+song[:-4]+".wav"
     subprocess.call(process, shell=True)
     songs.append(song[:-4]+".wav")
 
 def main():
     while True:
-        if len(songs) == 0:
+        if len(songs) == 0 and not pygame.mixer.music.get_busy():
             get_frozen()
         else:
             pygame.mixer.music.load(songs.pop())

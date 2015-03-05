@@ -9,6 +9,6 @@ def request_song():
     if rlist:
         s = sys.stdin.readline()
         s.split("\n")
-        return s[0]
+        return s
     else:
         return None
